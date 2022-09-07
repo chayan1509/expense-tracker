@@ -10,29 +10,47 @@ import {
   Slide,
 } from "@material-ui/core";
 import { Delete, MoneyOff } from "@material-ui/icons";
+
+import { ExpenseTrackerContext } from "../../../context/context";
 import useStyles from "./styles";
 
 const List = () => {
   const classes = useStyles();
-  const transactions = [
-    {id: 1, type:"Income", category: "Salary", amount: 50, date: "Tue Sep 06 2022" },
-    {id: 2, type:"Expense", category: "Business", amount: 150, date: "Mon Sep 05 2022" }
-  ];
+  const { transactions, deleteTransaction } = useContext(ExpenseTrackerContext);
 
   return (
     <MUIList dense={false} className={classes.list}>
       {transactions.map((transaction) => (
-        <Slide direction="down" in mountOnEnter unmountOnExit key={transaction.id}>
+        <Slide
+          direction="down"
+          in
+          mountOnEnter
+          unmountOnExit
+          key={transaction.id}
+        >
           <ListItem>
             <ListItemAvatar>
-                <Avatar className={transaction.type === 'Income' ? classes.avatarIncome : classes.avatarExpense}>
-                  <MoneyOff/>
-                </Avatar>
+              <Avatar
+                className={
+                  transaction.type === "Income"
+                    ? classes.avatarIncome
+                    : classes.avatarExpense
+                }
+              >
+                <MoneyOff />
+              </Avatar>
             </ListItemAvatar>
-            <ListItemText primary={transaction.category} secondary={`₹${transaction.amount} - ${transaction.date}`} />
+            <ListItemText
+              primary={transaction.category}
+              secondary={`$${transaction.amount} - ${transaction.date}`}
+            />
             <ListItemSecondaryAction>
-              <IconButton edge="end" aria-label="delete" onClick="">
-                  <Delete/>
+              <IconButton
+                edge="end"
+                aria-label="delete"
+                onClick={() => deleteTransaction(transaction.id)}
+              >
+                <Delete />
               </IconButton>
             </ListItemSecondaryAction>
           </ListItem>
